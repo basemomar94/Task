@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, "response is $facilityResponse")
                 facilityResponse?.facilities?.firstOrNull()?.options?.let { optionsList ->
                     withContext(Dispatchers.IO) {
-                        viewModel?.addOptionsList(optionsList)
+                        viewModel?.addOptionsList(optionsList.first())
                     }
                 }
             }

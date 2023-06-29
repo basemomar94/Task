@@ -9,11 +9,10 @@ class MainRepositoryImplement(private val apiService: ApiService, private val re
     MainRepository {
 
     override suspend fun getRetailsData(): FacilityResponse = apiService.getFacilities()
-
-    override suspend fun insertOptions(optionsList: List<Option>) {
+    override suspend fun insertOptions(option: Option) {
         val realm = Realm.getDefaultInstance()
         realm.executeTransaction { realmInstance ->
-             realmInstance.copyToRealmOrUpdate(optionsList)
+            realmInstance.copyToRealmOrUpdate(option)
         }
         realm.close()
     }
