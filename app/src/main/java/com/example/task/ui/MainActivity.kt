@@ -1,15 +1,16 @@
-package com.example.task
+package com.example.task.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.task.databinding.ActivityMainBinding
 import com.example.task.models.Exclusion
 import com.example.task.models.Facility
 import com.example.task.models.Option
+import com.example.task.ui.adapters.FacilityAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,42 +20,54 @@ class MainActivity : AppCompatActivity() {
     private val TAG = "database_Check"
     private var viewModel: FacilityViewModel? = null
     lateinit var binding: ActivityMainBinding
-    private var options: List<Option> = listOf()
-    private var exclusion: List<Exclusion> = listOf()
-    private var facilities: List<Facility> = listOf()
+    private var facilityAdapter: FacilityAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[FacilityViewModel::class.java]
-       // viewModel?.getOptionsList()
-       // viewModel?.getFacilityResponse()
-      //  viewModel?.getExclusionList()
-        /*  observeExclusion()
-         observeFacilities()
-        observeOptions()*/
-        binding.text.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
+        getRemoteFacilities()
+        observeRemoteFacilities()
+        getLocalFacilities()
+        observeLocalFacilities()
 
-                Log.d(TAG, "clicked ${facilities.size}  ${options.size}  ${exclusion.size}")
-                viewModel?.getFacilityResponse()
-            }
+    }
 
-        }
+    private fun getRemoteFacilities() {
+        viewModel?.getFacilityResponse()
+    }
 
+    private fun observeRemoteFacilities() {
         lifecycleScope.launch(Dispatchers.IO) {
             viewModel?.facilityResponse?.collect { facilityResponse ->
                 Log.d(TAG, facilityResponse.toString())
                 facilityResponse?.let {
-                    lifecycleScope.launch(Dispatchers.Main){
-                        Toast.makeText(this@MainActivity,"got ${it.facilities.size} ",Toast.LENGTH_SHORT).show()
-
-                    }
-                    Log.d("dao_bug","got from observer $it")
+                    Log.d("dao_bug", "got from observer $it")
                     viewModel?.savingDataToLocalDB(it)
                 }
             }
         }
+    }
+
+    private fun getLocalFacilities() = lifecycleScope.launch(Dispatchers.IO) {
+        viewModel?.getFacilitiesListFromLocal()
 
     }
+
+    private fun observeLocalFacilities() = lifecycleScope.launch(Dispatchers.IO) {
+        viewModel?.facilitiesLis?.collect {facilityList->
+            facilityList?.let {
+                populateRv(it)
+            }
+        }
+    }
+
+    private fun populateRv(list: List<Facility>) {
+        facilityAdapter = FacilityAdapter(list, this)
+        binding.recyclerview.adapter = facilityAdapter
+        binding.recyclerview.layoutManager = LinearLayoutManager(this)
+        binding.recyclerview.setHasFixedSize(true)
+    }
+
+
 }

@@ -37,7 +37,7 @@ class MainRepositoryImplement(private val apiService: ApiService, private val da
     }
 
     override suspend fun getFacilities(): List<Facility> {
-        return listOf()
+        return dao.getFacilities()
     }
 
 }

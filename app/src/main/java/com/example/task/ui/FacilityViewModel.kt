@@ -1,7 +1,6 @@
-package com.example.task
+package com.example.task.ui
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.task.data.repository.MainRepository
 import com.example.task.models.Exclusion
@@ -69,7 +68,7 @@ class FacilityViewModel @Inject constructor(
         option.emit(repository.getOptions())
     }
 
-    fun getFacilitiesList() = viewModelScope.launch(Dispatchers.IO) {
+    fun getFacilitiesListFromLocal() = viewModelScope.launch(Dispatchers.IO) {
         _facilitiesList.value = repository.getFacilities()
     }
 
@@ -79,7 +78,7 @@ class FacilityViewModel @Inject constructor(
 
     fun getDataFromDb() = viewModelScope.launch(Dispatchers.IO) {
         getOptionsList()
-        getFacilitiesList()
+        getFacilitiesListFromLocal()
         getExclusionList()
     }
 
