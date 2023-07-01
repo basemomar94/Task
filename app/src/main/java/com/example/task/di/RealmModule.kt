@@ -23,7 +23,7 @@ object RealmModule {
         Realm.init(context)
         val realmConfiguration = RealmConfiguration
             .Builder()
-            .name("Tsavo Project")
+            .name("Task Project").deleteRealmIfMigrationNeeded()
             .build()
         Realm.setDefaultConfiguration(realmConfiguration)
         return Realm.getDefaultInstance()

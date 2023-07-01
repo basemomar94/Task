@@ -1,10 +1,18 @@
 package com.example.task.models
 
-import androidx.room.Entity
+import android.os.Parcelable
+import io.realm.RealmObject
+import io.realm.annotations.Ignore
+import io.realm.annotations.PrimaryKey
 
-@Entity(tableName = "facility")
-data class Facility(
-    val facility_id: String,
-    val name: String,
-    val options: List<Option>
-)
+
+open class Facility(
+    @PrimaryKey
+    var id: String = "",
+    var facility_id: String = "",
+    var name: String = "",
+    @Ignore
+    var options: List<Option> = listOf()
+) : RealmObject() {
+
+}

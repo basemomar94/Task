@@ -12,4 +12,9 @@ open class Option(
     @PrimaryKey
     var id: String = "",
     var name: String = "",
-) : RealmObject(), Parcelable
+) : RealmObject(), Parcelable{
+    override fun toString(): String {
+        return "Option(icon='$icon', id='$id', name='$name')"
+    }
+
+}

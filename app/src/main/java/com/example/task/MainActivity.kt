@@ -30,10 +30,15 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch(Dispatchers.IO) {
             viewModel?.facilityResponse?.collect { facilityResponse ->
-                facilityResponse?.facilities?.let { optionsList ->
-                    Log.d(TAG, "response is ${optionsList.first().options}")
-                    viewModel?.addOptionsList(optionsList.first().options)
+                facilityResponse?.let {
+                    viewModel?.savingDataToLocalDB(it)
                 }
+            }
+        }
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel?.option?.collect {
+                Log.d(TAG,"options from db $it")
             }
         }
 
