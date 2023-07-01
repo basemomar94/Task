@@ -3,6 +3,7 @@ package com.example.task
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.task.databinding.ActivityMainBinding
@@ -26,9 +27,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[FacilityViewModel::class.java]
-        viewModel?.getOptionsList()
-        viewModel?.getFacilityResponse()
-        viewModel?.getExclusionList()
+       // viewModel?.getOptionsList()
+       // viewModel?.getFacilityResponse()
+      //  viewModel?.getExclusionList()
         /*  observeExclusion()
          observeFacilities()
         observeOptions()*/
@@ -43,49 +44,17 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch(Dispatchers.IO) {
             viewModel?.facilityResponse?.collect { facilityResponse ->
+                Log.d(TAG, facilityResponse.toString())
                 facilityResponse?.let {
+                    lifecycleScope.launch(Dispatchers.Main){
+                        Toast.makeText(this@MainActivity,"got ${it.facilities.size} ",Toast.LENGTH_SHORT).show()
+
+                    }
+                    Log.d("dao_bug","got from observer $it")
                     viewModel?.savingDataToLocalDB(it)
                 }
             }
         }
 
-        lifecycleScope.launch(Dispatchers.IO) {
-
-/*
-            viewModel?.facilitiesLis?.collect {
-                Log.d(TAG,"facilitiesLis from db $it")
-            }
-
-            viewModel?.exclusionList?.collect {
-                Log.d(TAG,"exclusionList from db $it")
-            }*/
-
-        }
-
-    }
-
-    private fun observeOptions() = lifecycleScope.launch(Dispatchers.IO) {
-        viewModel?.option?.collect {
-            if (it != null) {
-                options = it
-            }
-            //  Log.d(TAG,"options from db $it")
-        }
-    }
-
-    private fun observeFacilities() = lifecycleScope.launch(Dispatchers.IO) {
-        viewModel?.facilitiesLis?.collect {
-            if (it != null) {
-                facilities = it
-            }
-        }
-    }
-
-    private fun observeExclusion() = lifecycleScope.launch(Dispatchers.IO) {
-        viewModel?.exclusionList?.collect {
-            if (it != null) {
-                exclusion = it
-            }
-        }
     }
 }

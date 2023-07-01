@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 @Entity
 data class Exclusion(
     @androidx.room.PrimaryKey
-    var id: String = "",
+    var id: Int = 0,
     var facility_id: String = "",
     var options_id: String = ""
 )
