@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.task.databinding.ActivityMainBinding
+import com.example.task.models.Option
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,13 +28,11 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             viewModel?.facilityResponse?.collect { facilityResponse ->
-                Log.d(TAG, "response is $facilityResponse")
-                facilityResponse?.facilities?.firstOrNull()?.options?.let { optionsList ->
-                    withContext(Dispatchers.IO) {
-                        viewModel?.addOptionsList(optionsList.first())
-                    }
+                facilityResponse?.facilities?.let { optionsList ->
+                    Log.d(TAG, "response is ${optionsList.first().options}")
+                    viewModel?.addOptionsList(optionsList.first().options)
                 }
             }
         }

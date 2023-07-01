@@ -32,7 +32,7 @@ class FacilityViewModel @Inject constructor(
         }
     }
 
-    fun addOptionsList(option: Option) = viewModelScope.launch(Dispatchers.IO) {
+    fun addOptionsList(option: List<Option>) = viewModelScope.launch(Dispatchers.IO) {
         repository.insertOptions(option)
     }
 }

@@ -15,5 +15,5 @@ import io.realm.Realm
 object RepoModule {
 
      @Provides
-    fun provideRepo(apiService: ApiService,realm: Realm): MainRepository = MainRepositoryImplement(apiService,realm)
+    fun provideRepo(apiService: ApiService,realm: Realm): MainRepository = MainRepositoryImplement(apiService)
 }

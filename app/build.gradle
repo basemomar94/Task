@@ -2,27 +2,21 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'realm-android'
     id 'com.google.dagger.hilt.android'
     id 'kotlin-parcelize'
-
 }
-
-
-
 android {
     namespace 'com.example.task'
     compileSdk 33
-
     defaultConfig {
         applicationId "com.example.task"
         minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             minifyEnabled false

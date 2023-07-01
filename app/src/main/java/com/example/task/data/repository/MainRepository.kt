@@ -7,6 +7,8 @@ interface MainRepository {
 
     suspend fun getRetailsData(): FacilityResponse
 
-    suspend fun insertOptions(option: Option)
+    suspend fun insertOptions(option: List<Option>)
+
+
 
 }
