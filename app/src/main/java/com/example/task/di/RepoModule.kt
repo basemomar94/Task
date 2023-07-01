@@ -1,5 +1,6 @@
 package com.example.task.di
 
+import com.example.task.data.local.AppDao
 import com.example.task.data.remote.ApiService
 import com.example.task.data.repository.MainRepository
 import com.example.task.data.repository.MainRepositoryImplement
@@ -15,5 +16,5 @@ import io.realm.Realm
 object RepoModule {
 
      @Provides
-    fun provideRepo(apiService: ApiService,realm: Realm): MainRepository = MainRepositoryImplement(apiService)
+    fun provideRepo(apiService: ApiService,dao: AppDao): MainRepository = MainRepositoryImplement(apiService,dao)
 }
