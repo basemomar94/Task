@@ -51,6 +51,13 @@ class OptionsAdapter(
         } else {
             holder.binding.imageView.clearColorFilter()
         }
+        if (option.isEnabled) {
+            holder.binding.root.isEnabled = true
+          //  holder.binding.imageView.clearColorFilter()
+        } else {
+            holder.binding.root.isEnabled = false
+          //  holder.binding.imageView.setColorFilter(androidx.appcompat.R.color.material_blue_grey_800, PorterDuff.Mode.DARKEN)
+        }
         holder.binding.root.setOnClickListener {
             when (facilityId) {
                 1 -> optionsInterface.selectingTypeItem(

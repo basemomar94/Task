@@ -14,6 +14,7 @@ import com.example.task.models.Option
 import com.example.task.ui.adapters.OptionsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -60,6 +61,8 @@ class MainActivity : AppCompatActivity(), OptionsAdapter.OptionsInterface {
                 facilityResponse?.let {
                     Log.d("dao_bug", "got from observer ${it.exclusions}")
                     viewModel?.savingDataToLocalDB(it)
+                    delay(100)
+                    getLocalFacilities()
                 }
             }
         }
@@ -154,7 +157,7 @@ class MainActivity : AppCompatActivity(), OptionsAdapter.OptionsInterface {
         }
 
         adapter?.notifyDataSetChanged()
-        validateSelection(selectedOption)
+        disableItems(selectedOption)
 
 
     }
@@ -173,10 +176,11 @@ class MainActivity : AppCompatActivity(), OptionsAdapter.OptionsInterface {
     private fun validateSelection(selected: Option): MutableList<Exclusion> {
         Log.d(TAG, "validate ${exclusionsList}")
         val disabledOptions: MutableList<Exclusion> = mutableListOf()
-        Log.d(TAG,"selected $selected")
+        Log.d(TAG, "selected $selected")
         for (list1 in exclusionsList!!) {
-            Log.d(TAG,"list 1 $list1")
-            val currentObject = list1.filter { it.facility_id == selected.facilityOptionId && it.options_id == selected.id }
+            Log.d(TAG, "list 1 $list1")
+            val currentObject =
+                list1.filter { it.facility_id == selected.facilityOptionId && it.options_id == selected.id }
             Log.d(TAG, "out side condition $currentObject")
             if (currentObject.isNotEmpty()) {
                 Log.d(TAG, "inside condition $currentObject")
@@ -186,8 +190,50 @@ class MainActivity : AppCompatActivity(), OptionsAdapter.OptionsInterface {
                 Log.d(TAG, "remaining list $remainingOptions")
             }
         }
-        Log.d(TAG,"disabled options $disabledOptions")
+        Log.d(TAG, "disabled options $disabledOptions")
         return disabledOptions
+    }
+
+    private fun disableItems(selectedOption: Option) {
+        val disabledType: MutableList<Option> = mutableListOf()
+        val disabledRoom: MutableList<Option> = mutableListOf()
+        val disabledOther: MutableList<Option> = mutableListOf()
+        validateSelection(selectedOption).forEach { exclusion ->
+            propertyTypeList?.forEach { option ->
+                if (exclusion.facility_id == option.facilityOptionId && option.id == exclusion.options_id) {
+                    disabledType.add(option)
+                    option.isEnabled = false
+                    option.isSelected = false
+                    typeAdapter?.notifyDataSetChanged()
+                }
+
+            }
+            roomsList?.forEach { option ->
+                if (exclusion.facility_id == option.facilityOptionId && option.id == exclusion.options_id) {
+                    disabledRoom.add(option)
+                    option.isEnabled = false
+                    option.isSelected = false
+                    roomsAdapter?.notifyDataSetChanged()
+                }
+
+            }
+            otherFacilitiesList?.forEach { option ->
+                if (exclusion.facility_id == option.facilityOptionId && option.id == exclusion.options_id) {
+                    disabledOther.add(option)
+                    option.isEnabled = false
+                    option.isSelected = false
+                    otherAdapter?.notifyDataSetChanged()
+                }
+
+            }
+
+
+        }
+        Log.d(TAG, "disabling disabledType $disabledType")
+        Log.d(TAG, "disabling disabledRoom $disabledRoom")
+        Log.d(TAG, "disabling disabledOther $disabledOther")
+
+
     }
 }
 
