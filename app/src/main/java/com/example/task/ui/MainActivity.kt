@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity(), OptionsAdapter.OptionsInterface {
 
     private fun getRemoteFacilities() {
         viewModel?.getFacilityResponse()
+
     }
 
     private fun observeRemoteFacilitiesResponse() {
