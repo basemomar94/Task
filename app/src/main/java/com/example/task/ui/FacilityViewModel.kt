@@ -34,7 +34,7 @@ class FacilityViewModel @Inject constructor(
         MutableStateFlow(null)
     val facilitiesLis = _facilitiesList
 
-    private val _exclusionList: MutableStateFlow<List<Exclusion>?> =
+    private val _exclusionList: MutableStateFlow<FacilityResponse?> =
         MutableStateFlow(null)
     val exclusionList = _exclusionList
 
@@ -48,23 +48,22 @@ class FacilityViewModel @Inject constructor(
         }
     }
 
-    fun addOptionsList(option: List<Option>) = viewModelScope.launch(Dispatchers.IO) {
+    private fun addOptionsList(option: List<Option>) = viewModelScope.launch(Dispatchers.IO) {
         Log.d(TAG, "options ${option.size}")
         repository.insertOptions(option)
     }
 
-    fun addExclusion(exclusionsList: List<Exclusion>) = viewModelScope.launch(Dispatchers.IO) {
-        Log.d(TAG, "exclusionsList ${exclusionsList.size}")
-        repository.insertExclusion(exclusionsList)
+    private fun addExclusion(facilityResponse: FacilityResponse) = viewModelScope.launch(Dispatchers.IO) {
+        repository.insertExclusion(facilityResponse)
     }
 
-    fun addFacilities(facilitiesList: List<Facility>) = viewModelScope.launch(Dispatchers.IO) {
+    private fun addFacilities(facilitiesList: List<Facility>) = viewModelScope.launch(Dispatchers.IO) {
         Log.d(TAG, "facilitiesList ${facilitiesList.size}")
         repository.insertFacilities(facilitiesList)
     }
 
 
-    fun getOptionsList() = viewModelScope.launch(Dispatchers.IO) {
+    private fun getOptionsList() = viewModelScope.launch(Dispatchers.IO) {
         option.emit(repository.getOptions())
     }
 
@@ -76,23 +75,18 @@ class FacilityViewModel @Inject constructor(
         _exclusionList.value = repository.getExclusion()
     }
 
-    fun getDataFromDb() = viewModelScope.launch(Dispatchers.IO) {
-        getOptionsList()
-        getFacilitiesListFromLocal()
-        getExclusionList()
-    }
-
     fun savingDataToLocalDB(facilityResponse: FacilityResponse) =
         viewModelScope.launch(Dispatchers.IO) {
             Log.d("dao_bug", "adding to db ${facilityResponse.exclusions}")
             // val facility = repository.getRetailsData()
             facilityResponse.facilities.forEach { _facility ->
                 val optionsList = _facility.options
+                optionsList.forEach {
+                    it.facilityOptionId = _facility.facility_id
+                }
                 addOptionsList(optionsList)
             }
-            facilityResponse.exclusions.forEach { exclusions ->
-                addExclusion(exclusions)
-            }
+            addExclusion(facilityResponse)
             Log.d(
                 "dao_bug",
                 "from view model ${facilityResponse.facilities.size}  ${facilityResponse.facilities}}"

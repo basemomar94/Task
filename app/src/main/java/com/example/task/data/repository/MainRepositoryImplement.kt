@@ -6,13 +6,9 @@ import com.example.task.models.Exclusion
 import com.example.task.models.Facility
 import com.example.task.models.FacilityResponse
 import com.example.task.models.Option
-import io.realm.Realm
-import io.realm.RealmConfiguration
 
 class MainRepositoryImplement(private val apiService: ApiService, private val dao: AppDao) :
     MainRepository {
-
-    private val TAG = "demo_task"
 
 
     override suspend fun getRetailsData(): FacilityResponse = apiService.getFacilities()
@@ -24,12 +20,12 @@ class MainRepositoryImplement(private val apiService: ApiService, private val da
         return listOf()
     }
 
-    override suspend fun insertExclusion(exclusionsList: List<Exclusion>) {
-        dao.insertExclusion(exclusionsList)
+    override suspend fun insertExclusion(facilityResponse: FacilityResponse) {
+        dao.insertExclusion(facilityResponse)
     }
 
-    override suspend fun getExclusion(): List<Exclusion> {
-        return listOf()
+    override suspend fun getExclusion(): FacilityResponse {
+        return dao.getExclusions()
     }
 
     override suspend fun insertFacilities(facilitiesList: List<Facility>) {

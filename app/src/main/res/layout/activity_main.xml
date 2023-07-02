@@ -33,7 +33,7 @@
         </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
-            android:id="@+id/property_header2"
+            android:id="@+id/room_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/property_type"
@@ -47,9 +47,25 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/property_header2">
+            app:layout_constraintTop_toBottomOf="@+id/room_header">
 
         </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/other_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/property_type"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rooms_rv" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/others_rv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/other_header" />
 
         <Button
             android:id="@+id/button"

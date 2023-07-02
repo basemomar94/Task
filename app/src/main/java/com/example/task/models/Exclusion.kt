@@ -6,7 +6,6 @@ import io.realm.Realm
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import kotlinx.android.parcel.Parcelize
-@Entity
 data class Exclusion(
     @androidx.room.PrimaryKey
     var id: Int = 0,

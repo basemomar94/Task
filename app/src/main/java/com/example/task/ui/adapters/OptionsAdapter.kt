@@ -15,7 +15,7 @@ class OptionsAdapter(
     var options: List<Option>,
     val context: Context,
     val optionsInterface: OptionsInterface,
-    val type: String
+    val facilityId: Int
 ) :
     RecyclerView.Adapter<OptionsAdapter.ViewHolder>() {
 
@@ -51,20 +51,26 @@ class OptionsAdapter(
         } else {
             holder.binding.imageView.clearColorFilter()
         }
-        holder.binding.imageView.setOnClickListener {
-            when (type) {
-                DataConstants.PROPERTY_TYPE -> optionsInterface.selectingTypeItem(
+        holder.binding.root.setOnClickListener {
+            when (facilityId) {
+                1 -> optionsInterface.selectingTypeItem(
                     option,
                     position,
                     options,
-                    type
+                    facilityId
                 )
 
-                DataConstants.NUMBER_OF_ROOMS -> optionsInterface.selectingRoomItem(
+                2 -> optionsInterface.selectingRoomItem(
                     option,
                     position,
                     options,
-                    type
+                    facilityId
+                )
+                3 -> optionsInterface.selectingOtherItem(
+                    option,
+                    position,
+                    options,
+                    facilityId
                 )
 
             }
@@ -81,8 +87,10 @@ class OptionsAdapter(
     }
 
     interface OptionsInterface {
-        fun selectingTypeItem(option: Option, position: Int, list: List<Option>, type: String)
-        fun selectingRoomItem(option: Option, position: Int, list: List<Option>, type: String)
+        fun selectingTypeItem(option: Option, position: Int, list: List<Option>, facilityId: Int)
+        fun selectingRoomItem(option: Option, position: Int, list: List<Option>, facilityId: Int)
+
+        fun selectingOtherItem(option: Option, position: Int, list: List<Option>, facilityId: Int)
 
 
     }

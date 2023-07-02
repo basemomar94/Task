@@ -13,9 +13,9 @@ interface MainRepository {
 
      suspend  fun getOptions(): List<Option>
 
-     suspend  fun insertExclusion(exclusionsList: List<Exclusion>)
+     suspend  fun insertExclusion(facilityResponse: FacilityResponse)
 
-     suspend  fun getExclusion(): List<Exclusion>
+     suspend  fun getExclusion(): FacilityResponse
 
      suspend   fun insertFacilities(facilitiesList: List<Facility>)
 

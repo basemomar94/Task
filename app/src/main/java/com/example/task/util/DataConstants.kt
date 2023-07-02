@@ -3,9 +3,6 @@ package com.example.task.util
 object DataConstants {
 
     const val API_URL = "https://my-json-server.typicode.com/iranjith4/"
-    const val PROPERTY_TYPE = "Property Type"
-    const val NUMBER_OF_ROOMS = "Number of Rooms"
-    const val OTHER_FACILITIES = "Other facilities"
     const val APARTMENT = "apartment"
     const val CONDO = "condo"
     const val BOAT = "boat"
