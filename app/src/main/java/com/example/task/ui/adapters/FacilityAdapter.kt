@@ -9,7 +9,7 @@ import com.example.task.R
 import com.example.task.databinding.ItemFacilityBinding
 import com.example.task.models.Facility
 
-class FacilityAdapter(val facilities: List<Facility>, val context: Context) :
+class FacilityAdapter(val facilities: List<Facility>, val context: Context, val type: String) :
     RecyclerView.Adapter<FacilityAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemFacilityBinding) : RecyclerView.ViewHolder(binding.root)

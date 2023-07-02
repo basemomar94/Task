@@ -2,6 +2,7 @@ package com.example.task.models
 
 import android.os.Parcelable
 import androidx.room.Entity
+import androidx.room.Ignore
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
@@ -13,4 +14,6 @@ data class Option(
     @androidx.room.PrimaryKey
     var id: String = "",
     var name: String = "",
+    @Ignore
+    var isSelected: Boolean = false
 )
